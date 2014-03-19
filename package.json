@@ -1,0 +1,17 @@
+{
+  "name": "gardr-burt-host",
+  "version": "0.0.0",
+  "description": "A Garðr plugin for Burt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "Garðr",
+    "gardr",
+    "burt"
+  ],
+  "author": "FINN.no AS",
+  "license": "MIT"
+}
