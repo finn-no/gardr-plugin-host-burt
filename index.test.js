@@ -24,9 +24,7 @@ describe('burt-host', function () {
 
     beforeEach(function () {
         pluginApi = {
-            events: {
-                on: sinon.spy()
-            }
+            on: sinon.spy()
         };
     });
 
@@ -91,14 +89,34 @@ describe('burt-host', function () {
 
             mockBurtScript();
             var onItemRender;
-            expect(pluginApi.events.on).to.have.been.calledWithMatch('item:render', function (fn) {
+            expect(pluginApi.on).to.have.been.calledWithMatch('item:beforerender', function (fn) {
                 onItemRender = fn;
                 return typeof fn == 'function';
             });
             expect(onItemRender).to.exist;
-            var item = { iframe: { element: document.createElement('iframe') } };
+            var item = { options: { container: document.createElement('div') } };
             onItemRender(item);
-            expect(global.burtApi.trackByNode).to.have.been.calledWith(item.iframe.element);
+            expect(global.burtApi.trackByNode).to.have.been.calledWith(item.options.container);
+        });
+
+        it('should queue items rendered before the burt script has loaded', function (done) {
+            var burtPlugin = burtHost(options);
+            burtPlugin(pluginApi);
+
+            var onItemRender;
+            expect(pluginApi.on).to.have.been.calledWithMatch('item:beforerender', function (fn) {
+                onItemRender = fn;
+                return typeof fn == 'function';
+            });
+
+            var item = { id: 'test123', options: { container: document.createElement('div') } };
+            onItemRender(item);
+
+            setTimeout(function () {
+                mockBurtScript();
+                expect(global.burtApi.trackByNode).to.have.been.calledWith(item.options.container, { name: item.id });
+                done();
+            }, 0);
         });
     });
 });

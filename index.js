@@ -4,11 +4,8 @@ var reqOpts = ['init', 'burtScript'];
 var validateOpts = require('define-options')({
     burtScript       : 'string    - url to the burt script',
     startTracking    : 'function  - init function to pass to burtApi.startTracking'
-}, true);
+});
 
-/**
- * @param {{burtScript: string, init: function}} options
- */
 function factory (options) {
     validateOpts(options);
 
@@ -16,15 +13,23 @@ function factory (options) {
         loadBurt(options, gardr);
     };
 }
+var itemsToTrack = [];
+function trackByNode (item) {
+    if ( win.burtApi.trackByNode ) {
+        win.burtApi.trackByNode(item.options.container, {name : item.id});
+    } else {
+        itemsToTrack.push(item);
+    }
+}
 
 function loadBurt (options, gardr) {
     win.burtApi = win.burtApi || [];
+
+    gardr.on('item:beforerender', trackByNode);
+
     win.burtApi.push(function () {
         win.burtApi.startTracking(options.startTracking);
-
-        gardr.events.on('item:render', function (item) {
-            window.burtApi.trackByNode(item.iframe.element);
-        });
+        itemsToTrack.forEach(trackByNode);
     });
 
     var s = d.createElement('script');
