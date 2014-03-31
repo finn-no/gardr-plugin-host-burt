@@ -1,5 +1,4 @@
 var win = global, d = document;
-var reqOpts = ['init', 'burtScript'];
 
 var validateOpts = require('define-options')({
     burtScript       : 'string    - url to the burt script',
