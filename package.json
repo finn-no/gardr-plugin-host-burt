@@ -7,7 +7,8 @@
     "test": "./node_modules/karma/bin/karma start --single-run",
     "watch": "./node_modules/karma/bin/karma start"
   },
-  "repository": "",
+  "repository": "https://github.com/finn-no/gardr-burt-host.git",
+  "bugs": "https://github.com/finn-no/gardr-burt-host/issues",
   "keywords": [
     "Garðr",
     "gardr",

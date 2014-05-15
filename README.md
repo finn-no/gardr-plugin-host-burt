@@ -1,4 +1,4 @@
 gardr-burt-host
 ===============
 
-Burt plugin for Garðr - host side
+[Burt](http://burtcorp.com/) plugin for Garðr - host side
