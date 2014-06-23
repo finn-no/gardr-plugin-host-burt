@@ -114,7 +114,7 @@ describe('burt-host', function () {
 
             setTimeout(function () {
                 mockBurtScript();
-                expect(global.burtApi.trackByNode).to.have.been.calledWith(item.options.container, { name: item.id });
+                expect(global.burtApi.trackByNode).to.have.been.calledWith(item.options.container, { name: item.id, type: 'xdi', xdiId : item.id });
                 done();
             }, 0);
         });

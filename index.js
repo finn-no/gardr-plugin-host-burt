@@ -15,7 +15,7 @@ function factory (options) {
 var itemsToTrack = [];
 function trackByNode (item) {
     if ( win.burtApi.trackByNode ) {
-        win.burtApi.trackByNode(item.options.container, {name : item.id});
+        win.burtApi.trackByNode(item.options.container, {name : item.id,  type : 'xdi', xdiId : item.id});
     } else {
         itemsToTrack.push(item);
     }
@@ -25,7 +25,6 @@ function loadBurt (options, gardr) {
     win.burtApi = win.burtApi || [];
 
     gardr.on('item:beforerender', trackByNode);
-
     win.burtApi.push(function () {
         win.burtApi.startTracking(options.startTracking);
         itemsToTrack.forEach(trackByNode);
