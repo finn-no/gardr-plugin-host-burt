@@ -10,7 +10,7 @@ function mockBurtScript () {
 describe('burt-host', function () {
     var options = {
         burtScript: 'about:blank',
-        startTracking: function (gardr) {}
+        burtStartTracking: function (gardr) {}
     };
     var pluginApi;
 
@@ -34,41 +34,33 @@ describe('burt-host', function () {
 
     it('should throw if no options argument', function () {
         expect(function () {
-            burtHost();
+            burtHost(pluginApi);
         }).to.throw();
     });
 
     it('should throw if missing burtScript options argument', function () {
         expect(function () {
-            burtHost(options.without('burtScript'));
+            burtHost(pluginApi, options.without('burtScript'));
         }).to.throw();
     });
 
-    it('should throw if missing startTracking function in options argument', function () {
+    it('should throw if missing burtStartTracking function in options argument', function () {
         expect(function () {
-            burtHost(options.without('startTracking'));
+            burtHost(pluginApi, options.without('burtStartTracking'));
         }).to.throw();
     })
 
-    it('should take an object litteral an return a function', function () {
-        var burtPlugin = burtHost(options);
-        expect(burtPlugin).to.be.a('function');
-    });
-
     describe('plugin', function () {
         it('should define window.burtApi and add a function to it', function () {
-            var burtPlugin = burtHost(options);
-            burtPlugin(pluginApi);
+            burtHost(pluginApi, options);
             expect(global.burtApi).to.be.an('array');
             expect(global.burtApi).not.to.be.empty;
             expect(global.burtApi[0]).to.be.a('function');
         });
 
         it('should inject a script with burtScript as src', function () {
-            var burtPlugin = burtHost(options);
             var spy = sinon.spy(Node.prototype, 'appendChild');
-
-            burtPlugin(pluginApi);
+            burtHost(pluginApi, options);
             expect(spy).to.have.been.calledWithMatch(function (script) {
                 return script.src === options.burtScript;
             });
@@ -76,16 +68,14 @@ describe('burt-host', function () {
         });
 
         it('should call burtApi.startTracking when the burtScript has loaded', function () {
-            var burtPlugin = burtHost(options);
-            burtPlugin(pluginApi);
+            burtHost(pluginApi, options);
 
             mockBurtScript();
-            expect(burtApi.startTracking).to.have.been.calledWith(options.startTracking);
+            expect(burtApi.startTracking).to.have.been.calledWith(options.burtStartTracking);
         });
 
         it('should start tracking on node when the burtScript has loaded', function () {
-            var burtPlugin = burtHost(options);
-            burtPlugin(pluginApi);
+            burtHost(pluginApi, options);
 
             mockBurtScript();
             var onItemRender;
@@ -100,8 +90,7 @@ describe('burt-host', function () {
         });
 
         it('should queue items rendered before the burt script has loaded', function (done) {
-            var burtPlugin = burtHost(options);
-            burtPlugin(pluginApi);
+            burtHost(pluginApi, options);
 
             var onItemRender;
             expect(pluginApi.on).to.have.been.calledWithMatch('item:beforerender', function (fn) {

@@ -1,17 +1,10 @@
 var win = global, d = document;
 
 var validateOpts = require('define-options')({
-    burtScript       : 'string    - url to the burt script',
-    startTracking    : 'function  - init function to pass to burtApi.startTracking'
+    burtScript         : 'string    - url to the burt script',
+    burtStartTracking  : 'function  - init function to pass to burtApi.startTracking'
 });
 
-function factory (options) {
-    validateOpts(options);
-
-    return function (gardr) {
-        loadBurt(options, gardr);
-    };
-}
 var itemsToTrack = [];
 function trackByNode (item) {
     if ( win.burtApi.trackByNode ) {
@@ -21,12 +14,14 @@ function trackByNode (item) {
     }
 }
 
-function loadBurt (options, gardr) {
+function burtPlugin (gardrPluginApi, options) {
+    validateOpts(options);
     win.burtApi = win.burtApi || [];
 
-    gardr.on('item:beforerender', trackByNode);
+    gardrPluginApi.on('item:beforerender', trackByNode);
+
     win.burtApi.push(function () {
-        win.burtApi.startTracking(options.startTracking);
+        win.burtApi.startTracking(options.burtStartTracking);
         itemsToTrack.forEach(trackByNode);
     });
 
@@ -35,4 +30,4 @@ function loadBurt (options, gardr) {
     d.getElementsByTagName('script')[0].appendChild(s);
 }
 
-module.exports = factory;
+module.exports = burtPlugin;
