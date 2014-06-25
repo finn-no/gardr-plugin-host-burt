@@ -1,5 +1,5 @@
 {
-  "name": "gardr-burt-host",
+  "name": "gardr-plugin-host-burt",
   "version": "0.0.0",
   "description": "A Garðr plugin for Burt",
   "main": "index.js",
@@ -7,8 +7,8 @@
     "test": "./node_modules/karma/bin/karma start --single-run",
     "watch": "./node_modules/karma/bin/karma start"
   },
-  "repository": "https://github.com/finn-no/gardr-burt-host.git",
-  "bugs": "https://github.com/finn-no/gardr-burt-host/issues",
+  "repository": "https://github.com/finn-no/gardr-plugin-host-burt.git",
+  "bugs": "https://github.com/finn-no/gardr-plugin-host-burt/issues",
   "keywords": [
     "Garðr",
     "gardr",
