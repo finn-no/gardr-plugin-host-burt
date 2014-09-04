@@ -27,7 +27,7 @@ function burtPlugin (gardrPluginApi, options) {
 
     var s = d.createElement('script');
     s.src = options.burtScript;
-    d.getElementsByTagName('script')[0].appendChild(s);
+    d.getElementsByTagName('head')[0].appendChild(s);
 }
 
 module.exports = burtPlugin;
